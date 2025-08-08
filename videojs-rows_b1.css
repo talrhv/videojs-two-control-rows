@@ -1,0 +1,94 @@
+/* עוטף מצב דו-שכבתי */
+.vjs-has-2row-controls .vjs-control-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* רווח בין השורות */
+  padding: 10px 12px;
+}
+
+/* שורה עליונה: רק Progress */
+.vjs-2row .vjs-2row-top {
+  order: 0;
+  display: block;
+}
+
+/* להפוך את פס ההתקדמות לעבה ורוחב מלא */
+.vjs-2row .vjs-2row-top .vjs-progress-control {
+  width: 100%;
+  height: 14px;              /* עובי */
+  align-self: stretch;
+}
+
+.vjs-2row .vjs-2row-top .vjs-progress-holder {
+  height: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #e5e7eb; /* bg-gray-200 */
+}
+
+.vjs-2row .vjs-2row-top .vjs-play-progress,
+.vjs-2row .vjs-2row-top .vjs-load-progress div {
+  height: 100%;
+}
+
+.vjs-2row .vjs-2row-top .vjs-play-progress {
+  background: var(--primary-color, #6366f1);
+}
+
+.vjs-2row .vjs-2row-top .vjs-load-progress div {
+  background: rgba(0,0,0,0.15);
+}
+
+/* שורה תחתונה: שאר הקונטרולים */
+.vjs-2row .vjs-2row-bottom {
+  order: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ריווח דינמי */
+.vjs-2row .vjs-2row-bottom .vjs-2row-spacer {
+  flex: 1 1 auto;
+}
+
+/* כפתורים — סטיילינג מודרני */
+.vjs-has-2row-controls .vjs-control {
+  border-radius: 10px;
+  transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+.vjs-has-2row-controls .vjs-control:hover {
+  background: var(--primary-hover, rgba(99,102,241,0.12));
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+.vjs-has-2row-controls .vjs-control:active {
+  background: var(--primary-active, rgba(99,102,241,0.18));
+}
+
+/* טקסטים */
+.vjs-has-2row-controls .vjs-current-time,
+.vjs-has-2row-controls .vjs-duration,
+.vjs-has-2row-controls .vjs-remaining-time {
+  color: var(--primary-color, #6366f1);
+  font-weight: 600;
+}
+
+/* Volume panel אנכי (קומפקטי) */
+.vjs-has-2row-controls .vjs-volume-panel.vjs-volume-panel-horizontal {
+  flex-direction: row;
+}
+.vjs-has-2row-controls .vjs-volume-panel .vjs-volume-control {
+  width: 80px;
+}
+
+/* שקיפות רקע בר דיפולטי */
+.vjs-has-2row-controls .vjs-control-bar {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+}
+
+/* התאמה למצב כהה אם תרצה:
+body.dark .vjs-has-2row-controls .vjs-control-bar { background: rgba(17,24,39,0.75); } */
