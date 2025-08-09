@@ -1,0 +1,117 @@
+/* בסיס */
+.video-js.vjs-has-2row-controls {
+  overflow: visible; /* שלא יחתוך tooltips/markers */
+}
+
+/* ממקם את כל ה-control bar בתוך הווידאו - שתי שורות */
+.video-js.vjs-has-2row-controls .vjs-control-bar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;                 /* ריווח בין השורות */
+  padding: 8px 12px;        /* מרווח פנימי כולל */
+  background: linear-gradient(to top, rgba(0,0,0,.35), rgba(0,0,0,0));
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  z-index: 10;
+}
+
+/* שורה עליונה: רק פס התקדמות */
+.video-js.vjs-has-2row-controls .vjs-control-bar .vjs-2row-top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  pointer-events: none; /* לא לחסום tooltips חיצוניים */
+}
+.video-js.vjs-has-2row-controls .vjs-2row-top .vjs-progress-control {
+  pointer-events: auto;  /* אבל כן לאפשר אינטראקציה לפס עצמו */
+  width: 100%;
+  margin: 0 !important;
+}
+
+/* יישור מדויק: holder מקצה לקצה */
+.video-js.vjs-has-2row-controls .vjs-progress-control .vjs-progress-holder {
+  height: 10px;
+  margin: 0 !important;
+  border-radius: 8px;
+  background: rgba(255,255,255,.18);
+  overflow: hidden;
+}
+
+/* פס טעינה */
+.video-js.vjs-has-2row-controls .vjs-load-progress,
+.video-js.vjs-has-2row-controls .vjs-load-progress div {
+  background: rgba(255,255,255,.25);
+  height: 100%;
+}
+
+/* פס ניגון */
+.video-js.vjs-has-2row-controls .vjs-play-progress {
+  background: var(--primary-color, #6b4eff);
+  height: 100%;
+}
+
+/* הסתר את העיגול של ה-seek */
+.video-js.vjs-has-2row-controls .vjs-slider-handle,
+.video-js.vjs-has-2row-controls .vjs-seek-handle {
+  display: none !important;
+}
+
+/* markers מהתוספים – להבטיח יושבים מעל הפס */
+.video-js.vjs-has-2row-controls .vjs-2row-top .vjs-progress-control .vjs-progress-holder .vjs-marker,
+.video-js.vjs-has-2row-controls .vjs-viostream-marker {
+  z-index: 2;
+}
+
+/* שורה תחתונה: שאר הכפתורים */
+.video-js.vjs-has-2row-controls .vjs-control-bar .vjs-2row-bottom {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto auto auto auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* עיצוב אייקונים – בלי עיגול שקוף */
+.video-js.vjs-has-2row-controls .vjs-control-bar .vjs-control {
+  background: none !important;
+  border-radius: 8px;
+  color: #fff;
+  opacity: 0.95;
+  transition: opacity .15s ease, transform .15s ease, background-color .15s ease;
+  padding: 4px 6px;
+}
+.video-js.vjs-has-2row-controls .vjs-control:hover {
+  opacity: 1;
+  background-color: rgba(255,255,255,.08);
+}
+.video-js.vjs-has-2row-controls .vjs-control:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* טקסטי זמן */
+.video-js.vjs-has-2row-controls .vjs-current-time,
+.video-js.vjs-has-2row-controls .vjs-duration,
+.video-js.vjs-has-2row-controls .vjs-time-divider {
+  color: #fff;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+
+/* הסתר progress-control מהשורה התחתונה אם נוסף דינמית */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-progress-control {
+  display: none !important;
+}
+
+/* ריווח קטן מהווידאו כדי לא להידבק, אך שהפס יהיה מיושר בפנים */
+.p-8 .video-js.vjs-has-2row-controls .vjs-control-bar {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+/* לוודא שהtooltip של moments/notes לא נשבר */
+.video-js .note-tooltip-readonly {
+  pointer-events: auto;
+  z-index: 9999;
+}
