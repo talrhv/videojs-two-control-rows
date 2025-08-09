@@ -35,7 +35,7 @@
   display: flex !important;
   align-items: center;
   width: 100%;
-  min-height: 16px;
+  min-height: 20px;
   margin: 0;
   padding: 0;
 }
@@ -44,7 +44,7 @@
 .video-js.vjs-has-2row-controls .vjs-2row-top .vjs-progress-control {
   flex: 1 !important;
   width: 100% !important;
-  height: 16px !important;
+  height: 20px !important;
   margin: 0 !important;
   padding: 0 !important;
   position: relative;
@@ -52,9 +52,9 @@
 
 /* Progress holder styling */
 .video-js.vjs-has-2row-controls .vjs-progress-control .vjs-progress-holder {
-  height: 12px !important;
+  height: 16px !important;
   margin: 2px 0 !important;
-  border-radius: 6px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.2) !important;
   overflow: hidden !important;
   position: relative;
@@ -66,14 +66,14 @@
 .video-js.vjs-has-2row-controls .vjs-load-progress div {
   background: rgba(255, 255, 255, 0.3) !important;
   height: 100%;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 /* Play progress */
 .video-js.vjs-has-2row-controls .vjs-play-progress {
   background: var(--primary-color, #00d4ff) !important;
   height: 100%;
-  border-radius: 6px;
+  border-radius: 8px;
   position: relative;
   overflow: hidden !important;
 }
@@ -101,8 +101,17 @@
   padding: 0;
 }
 
-/* Control buttons styling */
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control {
+/* Control buttons styling - be more specific to avoid affecting unwanted controls */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-playback-rate-control,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-chapters-button,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-descriptions-button,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-captions-button,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-subtitles-button,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-audio-button {
   position: relative;
   background: none !important;
   border: none;
@@ -125,13 +134,53 @@
   box-sizing: border-box !important;
 }
 
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:hover {
+/* Generic fallback for other controls but less specific */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:not(.vjs-progress-control):not(.vjs-live-control):not(.vjs-seek-to-live-control):not(.vjs-custom-control-spacer):not(.vjs-spacer) {
+  position: relative;
+  background: none !important;
+  border: none;
+  border-radius: 6px;
+  color: #fff !important;
+  opacity: 0.9;
+  transition: all 0.15s ease;
+  padding: 0 !important;
+  margin: 0 2px;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  box-sizing: border-box !important;
+}
+
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-playback-rate-control:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-chapters-button:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-descriptions-button:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-captions-button:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-subtitles-button:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-audio-button:hover,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:not(.vjs-progress-control):not(.vjs-live-control):not(.vjs-seek-to-live-control):not(.vjs-custom-control-spacer):not(.vjs-spacer):hover {
   opacity: 1;
   background: rgba(255, 255, 255, 0.1) !important;
   transform: scale(1.05);
 }
 
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:active {
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-playback-rate-control:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-chapters-button:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-descriptions-button:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-captions-button:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-subtitles-button:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-audio-button:active,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:not(.vjs-progress-control):not(.vjs-live-control):not(.vjs-seek-to-live-control):not(.vjs-custom-control-spacer):not(.vjs-spacer):active {
   transform: scale(0.98);
   background: rgba(255, 255, 255, 0.15) !important;
 }
@@ -177,6 +226,19 @@
 
 /* Hide any progress controls that might appear in bottom row */
 .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-progress-control {
+  display: none !important;
+}
+
+/* Hide unwanted controls in bottom row */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-live-control,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-seek-to-live-control,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-custom-control-spacer,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-spacer {
+  display: none !important;
+}
+
+/* Only show these controls in bottom row */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom > :not(.vjs-play-control):not(.vjs-current-time):not(.vjs-time-divider):not(.vjs-duration):not(.vjs-volume-panel):not(.vjs-mute-control):not(.vjs-volume-control):not(.vjs-fullscreen-control):not(.vjs-picture-in-picture-control):not(.vjs-playback-rate-control):not(.vjs-chapters-button):not(.vjs-descriptions-button):not(.vjs-captions-button):not(.vjs-subtitles-button):not(.vjs-audio-button) {
   display: none !important;
 }
 
