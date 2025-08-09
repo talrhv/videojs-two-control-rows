@@ -42,13 +42,43 @@
     });
   }
 
+  // Map control names to Video.js component names
+  const CONTROL_MAP = {
+    'playToggle': 'PlayToggle',
+    'volumePanel': 'VolumePanel', 
+    'currentTimeDisplay': 'CurrentTimeDisplay',
+    'timeDivider': 'TimeDivider',
+    'durationDisplay': 'DurationDisplay',
+    'spacer': 'Spacer',
+    'fullscreenToggle': 'FullscreenToggle',
+    'pictureInPictureToggle': 'PictureInPictureToggle',
+    'playbackRateMenuButton': 'PlaybackRateMenuButton',
+    'chaptersButton': 'ChaptersButton',
+    'descriptionsButton': 'DescriptionsButton',
+    'captionsButton': 'CaptionsButton',
+    'subtitlesButton': 'SubtitlesButton',
+    'audioTrackButton': 'AudioTrackButton'
+  };
+
   class Rows2 extends Plugin {
     constructor(player, options) {
       super(player, options || {});
       this.player = player;
+      this.options = options || {};
       this.isBuilt = false;
       this.retryCount = 0;
       this.maxRetries = 10;
+      
+      // Default bottom row order if not specified
+      this.bottomOrder = this.options.bottomOrder || [
+        'playToggle',
+        'volumePanel', 
+        'currentTimeDisplay',
+        'timeDivider',
+        'durationDisplay',
+        'spacer',
+        'fullscreenToggle'
+      ];
       
       this.build = this.build.bind(this);
       this.rebuild = this.rebuild.bind(this);
@@ -114,11 +144,6 @@
         const bottomRow = document.createElement('div');
         bottomRow.className = 'vjs-2row-bottom';
 
-        // Collect all current children (except progress)
-        const otherControls = Array.from(cbEl.children).filter(child => 
-          !child.classList.contains('vjs-progress-control')
-        );
-
         // Clear control bar
         cbEl.innerHTML = '';
         
@@ -129,10 +154,14 @@
         // Move progress to top row
         topRow.appendChild(progressEl);
         
-        // Move other controls to bottom row
-        otherControls.forEach(control => {
-          if (control && control.parentNode !== bottomRow) {
-            bottomRow.appendChild(control);
+        // Add only the specified controls to bottom row
+        this.bottomOrder.forEach(controlName => {
+          const componentName = CONTROL_MAP[controlName];
+          if (componentName) {
+            const control = controlBar.getChild(componentName);
+            if (control && control.el()) {
+              bottomRow.appendChild(control.el());
+            }
           }
         });
 
