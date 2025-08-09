@@ -52,11 +52,11 @@
 
 /* Progress holder styling */
 .video-js.vjs-has-2row-controls .vjs-progress-control .vjs-progress-holder {
-  height: 6px !important;
-  margin: 3px 0 !important;
-  border-radius: 3px;
+  height: 8px !important;
+  margin: 2px 0 !important;
+  border-radius: 4px;
   background: rgba(255, 255, 255, 0.2) !important;
-  overflow: visible;
+  overflow: hidden;
   position: relative;
 }
 
@@ -65,40 +65,21 @@
 .video-js.vjs-has-2row-controls .vjs-load-progress div {
   background: rgba(255, 255, 255, 0.3) !important;
   height: 100%;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 /* Play progress */
 .video-js.vjs-has-2row-controls .vjs-play-progress {
   background: var(--primary-color, #00d4ff) !important;
   height: 100%;
-  border-radius: 3px;
+  border-radius: 4px;
   position: relative;
 }
 
-/* Progress handle */
-.video-js.vjs-has-2row-controls .vjs-progress-control:hover .vjs-progress-holder {
-  height: 8px !important;
-  margin: 2px 0 !important;
-}
-
+/* Hide progress handle completely */
 .video-js.vjs-has-2row-controls .vjs-seek-handle,
 .video-js.vjs-has-2row-controls .vjs-slider-handle {
-  width: 12px !important;
-  height: 12px !important;
-  background: #fff !important;
-  border: 2px solid var(--primary-color, #00d4ff) !important;
-  border-radius: 50%;
-  top: 50% !important;
-  margin-top: -6px !important;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.video-js.vjs-has-2row-controls .vjs-progress-control:hover .vjs-seek-handle,
-.video-js.vjs-has-2row-controls .vjs-progress-control:hover .vjs-slider-handle {
-  opacity: 1;
+  display: none !important;
 }
 
 /* Bottom row - all other controls */
@@ -122,14 +103,19 @@
   color: #fff !important;
   opacity: 0.9;
   transition: all 0.15s ease;
-  padding: 6px 8px;
+  padding: 0 !important;
   margin: 0 2px;
-  min-width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   font-size: 16px;
+  box-sizing: border-box !important;
 }
 
 .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:hover {
@@ -151,13 +137,29 @@
   font-weight: 500;
   font-size: 13px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  padding: 0 4px;
+  padding: 0 4px !important;
+  margin: 0 !important;
   opacity: 0.9;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
 }
 
 /* Volume control */
 .video-js.vjs-has-2row-controls .vjs-volume-panel {
   position: relative;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.video-js.vjs-has-2row-controls .vjs-volume-panel .vjs-volume-control,
+.video-js.vjs-has-2row-controls .vjs-volume-panel .vjs-mute-control {
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 /* Fullscreen and other buttons */
@@ -190,9 +192,12 @@
   }
   
   .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control {
-    min-width: 28px;
-    height: 28px;
-    padding: 4px 6px;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
     font-size: 14px;
   }
   
@@ -200,6 +205,16 @@
   .video-js.vjs-has-2row-controls .vjs-duration,
   .video-js.vjs-has-2row-controls .vjs-time-divider {
     font-size: 11px;
+    height: 32px !important;
+  }
+  
+  .video-js.vjs-has-2row-controls .vjs-volume-panel {
+    height: 32px !important;
+  }
+  
+  .video-js.vjs-has-2row-controls .vjs-volume-panel .vjs-volume-control,
+  .video-js.vjs-has-2row-controls .vjs-volume-panel .vjs-mute-control {
+    height: 32px !important;
   }
 }
 
