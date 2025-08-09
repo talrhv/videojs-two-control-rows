@@ -1,4 +1,3 @@
-/*! videojs-two-row-controls v1.0.1 | MIT */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['video.js'], factory);
@@ -12,11 +11,9 @@
 
   var Plugin = videojs.getPlugin('plugin');
 
-  // פונקציה להזזת אלמנט בבטחה
   function move(el, parent) {
     if (!el || !parent) return;
-    // אל תנסה להכניס אלמנט לתוך עצמו או לצאצא שלו
-    if (el === parent || el.contains(parent)) return;
+    if (el === parent || el.contains(parent)) return; // הגנה
     if (el.parentNode !== parent) parent.appendChild(el);
   }
 
@@ -42,7 +39,6 @@
           'fullscreenToggle'
         ],
         classes: {
-          root: 'vjs-2row',
           top: 'vjs-2row-top',
           bottom: 'vjs-2row-bottom'
         }
@@ -57,48 +53,35 @@
       var cb = player.getChild('controlBar');
       if (!cb || this._built) return;
 
-      // יצירת wrapper סביב ה-controlBar
-      var wrapper = createEl('div', this.opts.classes.root);
-      cb.el_.parentNode.insertBefore(wrapper, cb.el_);
-      wrapper.appendChild(cb.el_);
-
-      // יצירת שורות עליונה ותחתונה
+      // יצירת השורות בתוך ה-controlBar
       var top = createEl('div', this.opts.classes.top);
       var bottom = createEl('div', this.opts.classes.bottom);
-      cb.el_.insertBefore(top, cb.el_.firstChild);
+      cb.el_.innerHTML = ''; // לרוקן את הקיים
+
+      cb.el_.appendChild(top);
       cb.el_.appendChild(bottom);
 
-      // רשימת הילדים המקוריים, ללא ה-top וה-bottom
-      var childrenEls = Array.prototype
-        .slice.call(cb.el_.children)
-        .filter(function (el) { return el !== top && el !== bottom; });
-
-      // הזזת פס ההתקדמות לשורה העליונה
-      var progress = cb.getChild('progressControl')?.el_;
+      // הוספת progressControl לשורה העליונה
+      var progress = player.controlBar.getChild('progressControl')?.el_;
       if (progress) move(progress, top);
 
-      // spacer בין רכיבים
+      // spacer
       var spacerEl = createEl('div', 'vjs-2row-spacer');
       spacerEl.setAttribute('aria-hidden', 'true');
 
       const elByName = (name) => {
         if (name === 'spacer') return spacerEl;
-        var child = cb.getChild(name);
+        var child = player.controlBar.getChild(name);
         return child && child.el_ ? child.el_ : null;
       };
 
-      // הוספת רכיבים לשורה התחתונה בסדר שהוגדר
+      // הוספת שאר הכפתורים לשורה התחתונה
       this.opts.bottomOrder.forEach((name) => {
         var el = elByName(name);
         if (el) move(el, bottom);
       });
 
-      // כל שאר הרכיבים שלא הוזזו — לתחתונה
-      childrenEls.forEach((el) => {
-        if (el.parentNode === cb.el_) move(el, bottom);
-      });
-
-      this._els = { wrapper, top, bottom, spacerEl };
+      this._els = { top, bottom, spacerEl };
       this._built = true;
       player.addClass('vjs-has-2row-controls');
     }
@@ -108,15 +91,11 @@
       var player = this.player;
       var cb = player.getChild('controlBar');
       if (cb && this._els) {
-        const { top, bottom, wrapper } = this._els;
+        const { top, bottom } = this._els;
         while (top && top.firstChild) cb.el_.appendChild(top.firstChild);
         while (bottom && bottom.firstChild) cb.el_.appendChild(bottom.firstChild);
         if (top && top.parentNode) top.parentNode.removeChild(top);
         if (bottom && bottom.parentNode) bottom.parentNode.removeChild(bottom);
-        if (wrapper && wrapper.parentNode) {
-          wrapper.parentNode.insertBefore(cb.el_, wrapper);
-          wrapper.parentNode.removeChild(wrapper);
-        }
       }
       this.player.removeClass('vjs-has-2row-controls');
       this._built = false;
@@ -125,6 +104,5 @@
   }
 
   videojs.registerPlugin('twoRowControls', TwoRowControls);
-  TwoRowControls.VERSION = '1.0.1';
   return TwoRowControls;
 }));
