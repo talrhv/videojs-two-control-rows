@@ -1,0 +1,71 @@
+/* הגדרה כללית – מצב שתי שורות */
+.vjs-has-2row-controls .vjs-control-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+
+/* שורה עליונה – פס ההתקדמות */
+.vjs-2row-top {
+  order: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 6px 10px 2px;
+}
+
+/* פס ההתקדמות יתפרס על כל הרוחב */
+.vjs-2row-top .vjs-progress-control {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+/* שורה תחתונה – שאר הכפתורים */
+.vjs-2row-bottom {
+  order: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 8px;
+}
+
+/* עיבוי פס ההתקדמות */
+.vjs-has-2row-controls .vjs-progress-control .vjs-progress-holder {
+  height: 12px; /* עובי הפס */
+  border-radius: 9999px;
+}
+
+/* ברי טעינה וניגון */
+.vjs-has-2row-controls .vjs-progress-control .vjs-load-progress,
+.vjs-has-2row-controls .vjs-progress-control .vjs-play-progress,
+.vjs-has-2row-controls .vjs-progress-control .vjs-load-progress div {
+  height: 100%;
+  border-radius: 9999px;
+}
+
+/* הידית (seek handle) */
+.vjs-has-2row-controls
+  .vjs-progress-control
+  .vjs-progress-holder
+  .vjs-play-progress:before {
+  width: 14px;
+  height: 14px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15);
+}
+
+/* ספייסר אם נדרש */
+.vjs-2row-spacer {
+  flex: 1 1 auto;
+}
+
+/* התאמות צבעים (לא חובה – דוגמה) */
+.vjs-has-2row-controls .vjs-progress-control .vjs-play-progress {
+  background-color: var(--primary-color, #6b46c1);
+}
+
+.vjs-has-2row-controls .vjs-progress-control .vjs-load-progress {
+  background-color: rgba(255, 255, 255, 0.3);
+}
