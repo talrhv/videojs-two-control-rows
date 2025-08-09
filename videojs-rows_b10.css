@@ -101,17 +101,10 @@
   padding: 0;
 }
 
-/* Control buttons styling - be more specific to avoid affecting unwanted controls */
+/* Control buttons styling - apply to shown controls */
 .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control,
 .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-playback-rate-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-chapters-button,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-descriptions-button,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-captions-button,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-subtitles-button,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-audio-button {
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control {
   position: relative;
   background: none !important;
   border: none;
@@ -127,44 +120,29 @@
   max-width: 36px !important;
   min-height: 36px !important;
   max-height: 36px !important;
-  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   font-size: 16px;
   box-sizing: border-box !important;
 }
 
-/* Generic fallback for other controls but less specific */
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:not(.vjs-progress-control):not(.vjs-live-control):not(.vjs-seek-to-live-control):not(.vjs-custom-control-spacer):not(.vjs-spacer) {
+/* Volume panel specific styling */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-volume-panel {
   position: relative;
-  background: none !important;
-  border: none;
-  border-radius: 6px;
-  color: #fff !important;
-  opacity: 0.9;
-  transition: all 0.15s ease;
-  padding: 0 !important;
-  margin: 0 2px;
-  width: 36px !important;
   height: 36px !important;
-  min-width: 36px !important;
-  max-width: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  box-sizing: border-box !important;
+  align-items: center !important;
+  margin: 0 2px;
+}
+
+/* Spacer */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-spacer {
+  flex: 1 !important;
+  height: 36px !important;
 }
 
 .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control:hover,
 .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-playback-rate-control:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-chapters-button:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-descriptions-button:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-captions-button:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-subtitles-button:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-audio-button:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:not(.vjs-progress-control):not(.vjs-live-control):not(.vjs-seek-to-live-control):not(.vjs-custom-control-spacer):not(.vjs-spacer):hover {
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control:hover {
   opacity: 1;
   background: rgba(255, 255, 255, 0.1) !important;
   transform: scale(1.05);
@@ -172,15 +150,7 @@
 
 .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control:active,
 .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-playback-rate-control:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-chapters-button:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-descriptions-button:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-captions-button:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-subtitles-button:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-audio-button:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:not(.vjs-progress-control):not(.vjs-live-control):not(.vjs-seek-to-live-control):not(.vjs-custom-control-spacer):not(.vjs-spacer):active {
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control:active {
   transform: scale(0.98);
   background: rgba(255, 255, 255, 0.15) !important;
 }
@@ -229,17 +199,21 @@
   display: none !important;
 }
 
-/* Hide unwanted controls in bottom row */
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-live-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-seek-to-live-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-custom-control-spacer,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-spacer {
+/* Hide unwanted controls - hide everything by default, then show only what we want */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control {
   display: none !important;
 }
 
-/* Only show these controls in bottom row */
-.video-js.vjs-has-2row-controls .vjs-2row-bottom > :not(.vjs-play-control):not(.vjs-current-time):not(.vjs-time-divider):not(.vjs-duration):not(.vjs-volume-panel):not(.vjs-mute-control):not(.vjs-volume-control):not(.vjs-fullscreen-control):not(.vjs-picture-in-picture-control):not(.vjs-playback-rate-control):not(.vjs-chapters-button):not(.vjs-descriptions-button):not(.vjs-captions-button):not(.vjs-subtitles-button):not(.vjs-audio-button) {
-  display: none !important;
+/* Show only the controls we want */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-volume-panel,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-current-time,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-time-divider,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-duration,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-spacer,
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control {
+  display: flex !important;
 }
 
 /* Ensure proper z-index for tooltips and overlays */
