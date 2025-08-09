@@ -1,0 +1,222 @@
+/* VideoJS Two-Row Controls CSS */
+
+/* Base setup - ensure container doesn't clip */
+.video-js.vjs-has-2row-controls {
+  overflow: visible;
+}
+
+/* Control bar positioning and layout */
+.video-js.vjs-has-2row-controls .vjs-control-bar {
+  position: absolute !important;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100% !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  margin: 0;
+  background: linear-gradient(
+    to top, 
+    rgba(0, 0, 0, 0.7) 0%, 
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  backdrop-filter: blur(2px);
+  border-radius: 0 0 8px 8px;
+  z-index: 10;
+  transform: none !important;
+}
+
+/* Top row - progress bar only */
+.video-js.vjs-has-2row-controls .vjs-2row-top {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+  min-height: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Progress control in top row */
+.video-js.vjs-has-2row-controls .vjs-2row-top .vjs-progress-control {
+  flex: 1 !important;
+  width: 100% !important;
+  height: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative;
+}
+
+/* Progress holder styling */
+.video-js.vjs-has-2row-controls .vjs-progress-control .vjs-progress-holder {
+  height: 6px !important;
+  margin: 3px 0 !important;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2) !important;
+  overflow: visible;
+  position: relative;
+}
+
+/* Load progress */
+.video-js.vjs-has-2row-controls .vjs-load-progress,
+.video-js.vjs-has-2row-controls .vjs-load-progress div {
+  background: rgba(255, 255, 255, 0.3) !important;
+  height: 100%;
+  border-radius: 3px;
+}
+
+/* Play progress */
+.video-js.vjs-has-2row-controls .vjs-play-progress {
+  background: var(--primary-color, #00d4ff) !important;
+  height: 100%;
+  border-radius: 3px;
+  position: relative;
+}
+
+/* Progress handle */
+.video-js.vjs-has-2row-controls .vjs-progress-control:hover .vjs-progress-holder {
+  height: 8px !important;
+  margin: 2px 0 !important;
+}
+
+.video-js.vjs-has-2row-controls .vjs-seek-handle,
+.video-js.vjs-has-2row-controls .vjs-slider-handle {
+  width: 12px !important;
+  height: 12px !important;
+  background: #fff !important;
+  border: 2px solid var(--primary-color, #00d4ff) !important;
+  border-radius: 50%;
+  top: 50% !important;
+  margin-top: -6px !important;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.video-js.vjs-has-2row-controls .vjs-progress-control:hover .vjs-seek-handle,
+.video-js.vjs-has-2row-controls .vjs-progress-control:hover .vjs-slider-handle {
+  opacity: 1;
+}
+
+/* Bottom row - all other controls */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 32px;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Control buttons styling */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control {
+  position: relative;
+  background: none !important;
+  border: none;
+  border-radius: 6px;
+  color: #fff !important;
+  opacity: 0.9;
+  transition: all 0.15s ease;
+  padding: 6px 8px;
+  margin: 0 2px;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: scale(1.05);
+}
+
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control:active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Time displays */
+.video-js.vjs-has-2row-controls .vjs-current-time,
+.video-js.vjs-has-2row-controls .vjs-duration,
+.video-js.vjs-has-2row-controls .vjs-time-divider {
+  color: #fff !important;
+  font-weight: 500;
+  font-size: 13px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  padding: 0 4px;
+  opacity: 0.9;
+}
+
+/* Volume control */
+.video-js.vjs-has-2row-controls .vjs-volume-panel {
+  position: relative;
+}
+
+/* Fullscreen and other buttons */
+.video-js.vjs-has-2row-controls .vjs-fullscreen-control,
+.video-js.vjs-has-2row-controls .vjs-picture-in-picture-control {
+  margin-left: auto;
+}
+
+/* Hide any progress controls that might appear in bottom row */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-progress-control {
+  display: none !important;
+}
+
+/* Ensure proper z-index for tooltips and overlays */
+.video-js .vjs-tooltip,
+.video-js .note-tooltip-readonly {
+  z-index: 9999 !important;
+  pointer-events: auto;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .video-js.vjs-has-2row-controls .vjs-control-bar {
+    padding: 8px;
+    gap: 4px;
+  }
+  
+  .video-js.vjs-has-2row-controls .vjs-2row-bottom {
+    gap: 4px;
+  }
+  
+  .video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control {
+    min-width: 28px;
+    height: 28px;
+    padding: 4px 6px;
+    font-size: 14px;
+  }
+  
+  .video-js.vjs-has-2row-controls .vjs-current-time,
+  .video-js.vjs-has-2row-controls .vjs-duration,
+  .video-js.vjs-has-2row-controls .vjs-time-divider {
+    font-size: 11px;
+  }
+}
+
+/* Compatibility with container classes */
+.p-8 .video-js.vjs-has-2row-controls .vjs-control-bar {
+  /* Account for parent padding */
+  left: 0;
+  right: 0;
+  margin: 0;
+}
+
+/* Animation for smooth transitions */
+.video-js.vjs-has-2row-controls .vjs-control-bar {
+  transition: opacity 0.3s ease;
+}
+
+/* Ensure control bar stays visible on hover */
+.video-js.vjs-has-2row-controls:hover .vjs-control-bar {
+  opacity: 1;
+}
