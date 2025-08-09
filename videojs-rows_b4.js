@@ -12,10 +12,10 @@
 
   var Plugin = videojs.getPlugin('plugin');
 
-  // --- FIX 1: safe move ---
+  // פונקציה להזזת אלמנט בבטחה
   function move(el, parent) {
     if (!el || !parent) return;
-    // אל תנסה להכניס אלמנט לעצמו או להורה שהוא צאצא שלו
+    // אל תנסה להכניס אלמנט לתוך עצמו או לצאצא שלו
     if (el === parent || el.contains(parent)) return;
     if (el.parentNode !== parent) parent.appendChild(el);
   }
@@ -41,8 +41,13 @@
           'spacer',
           'fullscreenToggle'
         ],
-        classes: { root: 'vjs-2row', top: 'vjs-2row-top', bottom: 'vjs-2row-bottom' }
+        classes: {
+          root: 'vjs-2row',
+          top: 'vjs-2row-top',
+          bottom: 'vjs-2row-bottom'
+        }
       }, options || {});
+
       this.on('dispose', () => this.teardown());
       player.ready(() => this.build());
     }
@@ -52,25 +57,27 @@
       var cb = player.getChild('controlBar');
       if (!cb || this._built) return;
 
-      // עטיפה
+      // יצירת wrapper סביב ה-controlBar
       var wrapper = createEl('div', this.opts.classes.root);
       cb.el_.parentNode.insertBefore(wrapper, cb.el_);
       wrapper.appendChild(cb.el_);
 
-      // עליון/תחתון
+      // יצירת שורות עליונה ותחתונה
       var top = createEl('div', this.opts.classes.top);
       var bottom = createEl('div', this.opts.classes.bottom);
       cb.el_.insertBefore(top, cb.el_.firstChild);
       cb.el_.appendChild(bottom);
 
-      // --- FIX 2: אל תכלול top/bottom ב-snapshot ---
+      // רשימת הילדים המקוריים, ללא ה-top וה-bottom
       var childrenEls = Array.prototype
         .slice.call(cb.el_.children)
         .filter(function (el) { return el !== top && el !== bottom; });
 
+      // הזזת פס ההתקדמות לשורה העליונה
       var progress = cb.getChild('progressControl')?.el_;
       if (progress) move(progress, top);
 
+      // spacer בין רכיבים
       var spacerEl = createEl('div', 'vjs-2row-spacer');
       spacerEl.setAttribute('aria-hidden', 'true');
 
@@ -80,14 +87,14 @@
         return child && child.el_ ? child.el_ : null;
       };
 
+      // הוספת רכיבים לשורה התחתונה בסדר שהוגדר
       this.opts.bottomOrder.forEach((name) => {
         var el = elByName(name);
         if (el) move(el, bottom);
       });
 
-      // כל שאר הרכיבים שלא הוזזו – לתחתון
+      // כל שאר הרכיבים שלא הוזזו — לתחתונה
       childrenEls.forEach((el) => {
-        // שמירה: לא להזיז את top/bottom (כבר פילטרנו) ולא אם כבר בתחתון
         if (el.parentNode === cb.el_) move(el, bottom);
       });
 
