@@ -46,12 +46,15 @@
   const CONTROL_MAP = {
     'playToggle': 'PlayToggle',
     'volumePanel': 'VolumePanel', 
+    'volumePanelHorizontal': 'VolumePanelHorizontal',
     'currentTimeDisplay': 'CurrentTimeDisplay',
+    'remainingTime': 'RemainingTimeDisplay',
     'timeDivider': 'TimeDivider',
     'durationDisplay': 'DurationDisplay',
     'spacer': 'Spacer',
     'fullscreenToggle': 'FullscreenToggle',
     'pictureInPictureToggle': 'PictureInPictureToggle',
+    'qualitySelector': 'QualitySelector',
     'playbackRateMenuButton': 'PlaybackRateMenuButton',
     'chaptersButton': 'ChaptersButton',
     'descriptionsButton': 'DescriptionsButton',
@@ -161,6 +164,12 @@
             const control = controlBar.getChild(componentName);
             if (control && control.el()) {
               bottomRow.appendChild(control.el());
+            }
+          } else {
+            // Try to find control by CSS class if component mapping fails
+            const controlEl = cbEl.querySelector(`.vjs-${controlName.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
+            if (controlEl) {
+              bottomRow.appendChild(controlEl);
             }
           }
         });
