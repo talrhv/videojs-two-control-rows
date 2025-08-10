@@ -254,3 +254,7 @@
 .video-js.vjs-has-2row-controls:hover .vjs-control-bar {
   opacity: 1;
 }
+.vjs-icon-placeholder::before {
+  display:flex;
+align-items:center;
+justify-content: center;
