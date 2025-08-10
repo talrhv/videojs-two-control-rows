@@ -101,12 +101,8 @@
   padding: 0;
 }
 
-/* Control buttons styling - apply to shown controls */
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-quality-selector {
+/* Universal styling for all bottom row controls */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom > *:not(.vjs-spacer):not([class*="time"]):not([class*="divider"]):not([class*="volume-panel"]) {
   position: relative;
   background: none !important;
   border: none;
@@ -122,15 +118,28 @@
   max-width: 36px !important;
   min-height: 36px !important;
   max-height: 36px !important;
+  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   font-size: 16px;
   box-sizing: border-box !important;
 }
 
+/* Hover effects for all button controls */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom > *:not(.vjs-spacer):not([class*="time"]):not([class*="divider"]):not([class*="volume-panel"]):hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: scale(1.05);
+}
+
+/* Active effects for all button controls */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom > *:not(.vjs-spacer):not([class*="time"]):not([class*="divider"]):not([class*="volume-panel"]):active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
 /* Volume panel specific styling */
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-volume-panel,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-volume-panel-horizontal {
+.video-js.vjs-has-2row-controls .vjs-2row-bottom [class*="volume-panel"] {
   position: relative;
   height: 36px !important;
   align-items: center !important;
@@ -143,30 +152,10 @@
   height: 36px !important;
 }
 
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control:hover,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-quality-selector:hover {
-  opacity: 1;
-  background: rgba(255, 255, 255, 0.1) !important;
-  transform: scale(1.05);
-}
-
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control:active,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-quality-selector:active {
-  transform: scale(0.98);
-  background: rgba(255, 255, 255, 0.15) !important;
-}
-
-/* Time displays */
-.video-js.vjs-has-2row-controls .vjs-current-time,
-.video-js.vjs-has-2row-controls .vjs-duration,
-.video-js.vjs-has-2row-controls .vjs-remaining-time,
-.video-js.vjs-has-2row-controls .vjs-time-divider {
+/* Time displays - universal selector for any time-related element */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom [class*="time"],
+.video-js.vjs-has-2row-controls .vjs-2row-bottom [class*="duration"],
+.video-js.vjs-has-2row-controls .vjs-2row-bottom [class*="divider"] {
   color: #fff !important;
   font-weight: 500;
   font-size: 13px;
@@ -179,22 +168,12 @@
   align-items: center !important;
   justify-content: center !important;
   line-height: 1 !important;
+  background: none !important;
 }
 
-/* Volume control */
-.video-js.vjs-has-2row-controls .vjs-volume-panel {
-  position: relative;
-  height: 36px !important;
-  display: flex !important;
-  align-items: center !important;
-}
 
-.video-js.vjs-has-2row-controls .vjs-volume-panel .vjs-volume-control,
-.video-js.vjs-has-2row-controls .vjs-volume-panel .vjs-mute-control {
-  height: 36px !important;
-  display: flex !important;
-  align-items: center !important;
-}
+
+
 
 /* Fullscreen and other buttons */
 .video-js.vjs-has-2row-controls .vjs-fullscreen-control,
@@ -207,25 +186,10 @@
   display: none !important;
 }
 
-/* Hide unwanted controls - hide everything by default, then show only what we want */
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-control {
-  display: none !important;
-}
-
-/* Show only the controls we want */
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-play-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-volume-panel,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-volume-panel-horizontal,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-mute-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-current-time,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-remaining-time,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-time-divider,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-duration,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-spacer,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-fullscreen-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-picture-in-picture-control,
-.video-js.vjs-has-2row-controls .vjs-2row-bottom .vjs-quality-selector {
+/* Hide unwanted controls - hide everything by default, then show only what we add */
+.video-js.vjs-has-2row-controls .vjs-2row-bottom > * {
   display: flex !important;
+  align-items: center !important;
 }
 
 /* Ensure proper z-index for tooltips and overlays */
