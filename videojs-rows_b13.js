@@ -159,18 +159,41 @@
         
         // Add only the specified controls to bottom row
         this.bottomOrder.forEach(controlName => {
+          // First try component mapping
           const componentName = CONTROL_MAP[controlName];
+          let foundControl = false;
+          
           if (componentName) {
             const control = controlBar.getChild(componentName);
             if (control && control.el()) {
               bottomRow.appendChild(control.el());
+              foundControl = true;
             }
-          } else {
-            // Try to find control by CSS class if component mapping fails
-            const controlEl = cbEl.querySelector(`.vjs-${controlName.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
-            if (controlEl) {
-              bottomRow.appendChild(controlEl);
+          }
+          
+          // If component mapping failed, try multiple CSS selector approaches
+          if (!foundControl) {
+            const possibleSelectors = [
+              `.vjs-${controlName}`, // exact match
+              `.vjs-${controlName.replace(/([A-Z])/g, '-$1').toLowerCase()}`, // camelCase to kebab-case
+              `[class*="${controlName}"]`, // partial class match
+              `.${controlName}`, // direct class name
+              `[class*="vjs-${controlName}"]`, // partial vjs- match
+            ];
+            
+            for (const selector of possibleSelectors) {
+              const controlEl = cbEl.querySelector(selector + ':not(.vjs-progress-control)');
+              if (controlEl && !bottomRow.contains(controlEl)) {
+                bottomRow.appendChild(controlEl);
+                foundControl = true;
+                break;
+              }
             }
+          }
+          
+          // Debug log for troubleshooting
+          if (!foundControl) {
+            console.warn(`VideoJS Rows: Could not find control "${controlName}"`);
           }
         });
 
