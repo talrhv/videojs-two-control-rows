@@ -72,10 +72,11 @@
       this.retryCount = 0;
       this.maxRetries = 10;
       
-      // Default bottom row order if not specified
-      this.bottomOrder = this.options.bottomOrder || [
-        'playToggle',
-        'volumePanel', 
+      // Define left side controls
+      this.leftControls = ['playToggle', 'volumePanel'];
+      
+      // Default right side controls if not specified
+      this.rightControls = this.options.rightControls || [
         'currentTimeDisplay',
         'timeDivider',
         'durationDisplay',
@@ -146,6 +147,13 @@
         
         const bottomRow = document.createElement('div');
         bottomRow.className = 'vjs-2row-bottom';
+        
+        // Create left and right containers for bottom row
+        const leftContainer = document.createElement('div');
+        leftContainer.className = 'vjs-2row-bottom-left';
+        
+        const rightContainer = document.createElement('div');
+        rightContainer.className = 'vjs-2row-bottom-right';
 
         // Clear control bar
         cbEl.innerHTML = '';
@@ -154,47 +162,21 @@
         cbEl.appendChild(topRow);
         cbEl.appendChild(bottomRow);
         
+        // Add left and right containers to bottom row
+        bottomRow.appendChild(leftContainer);
+        bottomRow.appendChild(rightContainer);
+        
         // Move progress to top row
         topRow.appendChild(progressEl);
         
-        // Add only the specified controls to bottom row
-        this.bottomOrder.forEach(controlName => {
-          // First try component mapping
-          const componentName = CONTROL_MAP[controlName];
-          let foundControl = false;
-          
-          if (componentName) {
-            const control = controlBar.getChild(componentName);
-            if (control && control.el()) {
-              bottomRow.appendChild(control.el());
-              foundControl = true;
-            }
-          }
-          
-          // If component mapping failed, try multiple CSS selector approaches
-          if (!foundControl) {
-            const possibleSelectors = [
-              `.vjs-${controlName}`, // exact match
-              `.vjs-${controlName.replace(/([A-Z])/g, '-$1').toLowerCase()}`, // camelCase to kebab-case
-              `[class*="${controlName}"]`, // partial class match
-              `.${controlName}`, // direct class name
-              `[class*="vjs-${controlName}"]`, // partial vjs- match
-            ];
-            
-            for (const selector of possibleSelectors) {
-              const controlEl = cbEl.querySelector(selector + ':not(.vjs-progress-control)');
-              if (controlEl && !bottomRow.contains(controlEl)) {
-                bottomRow.appendChild(controlEl);
-                foundControl = true;
-                break;
-              }
-            }
-          }
-          
-          // Debug log for troubleshooting
-          if (!foundControl) {
-            console.warn(`VideoJS Rows: Could not find control "${controlName}"`);
-          }
+        // Add left controls to left container
+        this.leftControls.forEach(controlName => {
+          this.addControlToContainer(controlBar, controlName, leftContainer, cbEl);
+        });
+        
+        // Add right controls to right container
+        this.rightControls.forEach(controlName => {
+          this.addControlToContainer(controlBar, controlName, rightContainer, cbEl);
         });
 
         // Add CSS class
@@ -203,6 +185,45 @@
 
       } catch (error) {
         console.error('VideoJS Rows build error:', error);
+      }
+    }
+
+    addControlToContainer(controlBar, controlName, container, cbEl) {
+      // First try component mapping
+      const componentName = CONTROL_MAP[controlName];
+      let foundControl = false;
+      
+      if (componentName) {
+        const control = controlBar.getChild(componentName);
+        if (control && control.el()) {
+          container.appendChild(control.el());
+          foundControl = true;
+        }
+      }
+      
+      // If component mapping failed, try multiple CSS selector approaches
+      if (!foundControl) {
+        const possibleSelectors = [
+          `.vjs-${controlName}`, // exact match
+          `.vjs-${controlName.replace(/([A-Z])/g, '-$1').toLowerCase()}`, // camelCase to kebab-case
+          `[class*="${controlName}"]`, // partial class match
+          `.${controlName}`, // direct class name
+          `[class*="vjs-${controlName}"]`, // partial vjs- match
+        ];
+        
+        for (const selector of possibleSelectors) {
+          const controlEl = cbEl.querySelector(selector + ':not(.vjs-progress-control)');
+          if (controlEl && !container.contains(controlEl)) {
+            container.appendChild(controlEl);
+            foundControl = true;
+            break;
+          }
+        }
+      }
+      
+      // Debug log for troubleshooting
+      if (!foundControl) {
+        console.warn(`VideoJS Rows: Could not find control "${controlName}"`);
       }
     }
 
@@ -230,19 +251,24 @@
       if (!cbEl) return;
 
       try {
-        // Get all controls from both rows
+        // Get all controls from all containers
         const allControls = [];
         const topRow = cbEl.querySelector('.vjs-2row-top');
-        const bottomRow = cbEl.querySelector('.vjs-2row-bottom');
+        const leftContainer = cbEl.querySelector('.vjs-2row-bottom-left');
+        const rightContainer = cbEl.querySelector('.vjs-2row-bottom-right');
         
-        [topRow, bottomRow].forEach(row => {
-          if (row) {
-            Array.from(row.children).forEach(child => {
+        [topRow, leftContainer, rightContainer].forEach(container => {
+          if (container) {
+            Array.from(container.children).forEach(child => {
               allControls.push(child);
             });
-            row.remove();
           }
         });
+
+        // Remove row containers
+        const bottomRow = cbEl.querySelector('.vjs-2row-bottom');
+        if (topRow) topRow.remove();
+        if (bottomRow) bottomRow.remove();
 
         // Put all controls back in control bar
         allControls.forEach(control => {
