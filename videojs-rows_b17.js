@@ -75,6 +75,21 @@
       // Define left side controls - only these two
       this.leftControls = ['playToggle', 'volumePanel'];
       
+      // Default bottom row order if not specified (excluding left controls)
+      this.rightControls = this.options.rightControls || [
+        'currentTimeDisplay',
+        'timeDivider',
+        'durationDisplay',
+        'spacer',
+        'fullscreenToggle'
+      ];
+      
+      // For backward compatibility, support bottomOrder option
+      if (this.options.bottomOrder) {
+        // Filter out left controls from bottomOrder
+        this.rightControls = this.options.bottomOrder.filter(ctrl => !this.leftControls.includes(ctrl));
+      }
+      
       this.build = this.build.bind(this);
       this.rebuild = this.rebuild.bind(this);
       
@@ -165,8 +180,10 @@
           this.addControlToContainer(controlBar, controlName, leftContainer, cbEl);
         });
         
-        // Add all remaining controls to right container (everything except progress and left controls)
-        this.addAllRemainingControls(controlBar, leftContainer, rightContainer, cbEl);
+        // Add right controls to right container  
+        this.rightControls.forEach(controlName => {
+          this.addControlToContainer(controlBar, controlName, rightContainer, cbEl);
+        });
 
         // Add CSS class
         player.addClass('vjs-has-2row-controls');
