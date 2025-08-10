@@ -54,7 +54,7 @@
     'spacer': 'Spacer',
     'fullscreenToggle': 'FullscreenToggle',
     'pictureInPictureToggle': 'PictureInPictureToggle',
-    'qualitySelector': 'QualitySelector',
+    'qualitySelector': 'QualityButton',
     'playbackRateMenuButton': 'PlaybackRateMenuButton',
     'chaptersButton': 'ChaptersButton',
     'descriptionsButton': 'DescriptionsButton',
