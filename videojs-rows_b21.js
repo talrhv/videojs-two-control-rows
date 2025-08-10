@@ -301,29 +301,29 @@
       }
     }
 
-    async rebuild() {
-      if (!this.isBuilt) return;
-      
-      const controlBar = this.player.getChild('ControlBar');
-      const cbEl = controlBar && controlBar.el();
-      if (!cbEl) return;
-      // If structure exists, and containers are present, no teardown is needed
-      const topRow = cbEl.querySelector('.vjs-2row-top');
-      const left = cbEl.querySelector('.vjs-2row-bottom-left');
-      const right = cbEl.querySelector('.vjs-2row-bottom-right');
+async rebuild() {
+  if (!this.isBuilt) return;
 
-      if (topRow && left && right) {
-        // Nothing to do; keep existing structure without pulling extra controls
-        return;
-      }
+  const controlBar = this.player.getChild('ControlBar');
+  const cbEl = controlBar && controlBar.el();
+  if (!cbEl) return;
 
-      }
+  // If structure exists, and containers are present, no teardown is needed
+  const topRow = cbEl.querySelector('.vjs-2row-top');
+  const left = cbEl.querySelector('.vjs-2row-bottom-left');
+  const right = cbEl.querySelector('.vjs-2row-bottom-right');
 
-      // Fallback: full rebuild only if structure is missing
-      this.isBuilt = false;
-      this.player.removeClass('vjs-has-2row-controls');
-      setTimeout(() => this.build(), 100);
-    }
+  if (topRow && left && right) {
+    // Nothing to do; keep existing structure without pulling extra controls
+    return;
+  }
+
+  // Fallback: full rebuild only if structure is missing
+  this.isBuilt = false;
+  this.player.removeClass('vjs-has-2row-controls');
+  setTimeout(() => this.build(), 100);
+}
+
 
     dispose() {
       const player = this.player;
