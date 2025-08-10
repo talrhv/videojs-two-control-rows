@@ -72,17 +72,8 @@
       this.retryCount = 0;
       this.maxRetries = 10;
       
-      // Define left side controls
+      // Define left side controls - only these two
       this.leftControls = ['playToggle', 'volumePanel'];
-      
-      // Default right side controls if not specified
-      this.rightControls = this.options.rightControls || [
-        'currentTimeDisplay',
-        'timeDivider',
-        'durationDisplay',
-        'spacer',
-        'fullscreenToggle'
-      ];
       
       this.build = this.build.bind(this);
       this.rebuild = this.rebuild.bind(this);
@@ -174,10 +165,8 @@
           this.addControlToContainer(controlBar, controlName, leftContainer, cbEl);
         });
         
-        // Add right controls to right container
-        this.rightControls.forEach(controlName => {
-          this.addControlToContainer(controlBar, controlName, rightContainer, cbEl);
-        });
+        // Add all remaining controls to right container (everything except progress and left controls)
+        this.addAllRemainingControls(controlBar, leftContainer, rightContainer, cbEl);
 
         // Add CSS class
         player.addClass('vjs-has-2row-controls');
@@ -186,6 +175,63 @@
       } catch (error) {
         console.error('VideoJS Rows build error:', error);
       }
+    }
+
+    addAllRemainingControls(controlBar, leftContainer, rightContainer, cbEl) {
+      // Get all control bar children
+      const allChildren = controlBar.children();
+      
+      // Also look for any remaining DOM elements in the control bar
+      const domElements = Array.from(cbEl.children).filter(el => 
+        !el.classList.contains('vjs-2row-top') && 
+        !el.classList.contains('vjs-2row-bottom') &&
+        !el.classList.contains('vjs-progress-control')
+      );
+      
+      // Process VideoJS component children
+      allChildren.forEach(child => {
+        if (child && child.el && typeof child.el === 'function') {
+          const childEl = child.el();
+          if (childEl && 
+              !childEl.classList.contains('vjs-progress-control') &&
+              !leftContainer.contains(childEl) &&
+              !rightContainer.contains(childEl)) {
+            
+            // Skip if it's one of the left controls by checking class names
+            const isLeftControl = this.leftControls.some(leftCtrl => {
+              const componentName = CONTROL_MAP[leftCtrl];
+              if (componentName && child.name_ === componentName) return true;
+              
+              const possibleClasses = [
+                `vjs-${leftCtrl}`,
+                `vjs-${leftCtrl.replace(/([A-Z])/g, '-$1').toLowerCase()}`
+              ];
+              return possibleClasses.some(cls => childEl.classList.contains(cls));
+            });
+            
+            if (!isLeftControl) {
+              rightContainer.appendChild(childEl);
+            }
+          }
+        }
+      });
+      
+      // Process remaining DOM elements
+      domElements.forEach(el => {
+        if (!leftContainer.contains(el) && !rightContainer.contains(el)) {
+          const isLeftControl = this.leftControls.some(leftCtrl => {
+            const possibleClasses = [
+              `vjs-${leftCtrl}`,
+              `vjs-${leftCtrl.replace(/([A-Z])/g, '-$1').toLowerCase()}`
+            ];
+            return possibleClasses.some(cls => el.classList.contains(cls));
+          });
+          
+          if (!isLeftControl) {
+            rightContainer.appendChild(el);
+          }
+        }
+      });
     }
 
     addControlToContainer(controlBar, controlName, container, cbEl) {
