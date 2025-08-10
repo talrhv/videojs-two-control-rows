@@ -55,7 +55,7 @@
 .video-js.vjs-has-2row-controls .vjs-progress-control .vjs-progress-holder {
   height: 16px !important;
   margin: 2px 0 !important;
-  border-radius: 8px;
+/*   border-radius: 8px; */
   background: rgba(255, 255, 255, 0.2) !important;
   overflow: hidden !important;
   position: relative;
@@ -67,14 +67,14 @@
 .video-js.vjs-has-2row-controls .vjs-load-progress div {
   background: rgba(255, 255, 255, 0.3) !important;
   height: 100%;
-  border-radius: 8px;
+/*   border-radius: 8px; */
 }
 
 /* Play progress */
 .video-js.vjs-has-2row-controls .vjs-play-progress {
   background: var(--primary-color, #00d4ff) !important;
   height: 100%;
-  border-radius: 8px;
+/*   border-radius: 8px; */
   position: relative;
   overflow: hidden !important;
 }
