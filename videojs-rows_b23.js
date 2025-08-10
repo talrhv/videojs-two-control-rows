@@ -20,7 +20,6 @@
         resolve(element);
         return;
       }
-
       const observer = new MutationObserver(() => {
         const found = parent.querySelector(selector);
         if (found) {
@@ -28,16 +27,8 @@
           resolve(found);
         }
       });
-
-      observer.observe(parent, {
-        childList: true,
-        subtree: true
-      });
-
-      setTimeout(() => {
-        observer.disconnect();
-        resolve(null);
-      }, timeout);
+      observer.observe(parent, { childList: true, subtree: true });
+      setTimeout(() => { observer.disconnect(); resolve(null); }, timeout);
     });
   }
 
@@ -71,10 +62,10 @@
       this.retryCount = 0;
       this.maxRetries = 10;
 
-      // Define left side controls - only these two
+      // left side controls
       this.leftControls = ['playToggle', 'volumePanel'];
 
-      // Default bottom row order if not specified (excluding left controls)
+      // right side controls
       this.rightControls = this.options.rightControls || [
         'currentTimeDisplay',
         'timeDivider',
@@ -83,40 +74,37 @@
         'fullscreenToggle'
       ];
 
-      // Backward compatibility: bottomOrder
+      // backward compat
       if (this.options.bottomOrder) {
         this.rightControls = this.options.bottomOrder.filter(
           ctrl => !this.leftControls.includes(ctrl)
         );
       }
 
-      // Bindings
       this.build = this.build.bind(this);
       this.rebuild = this.rebuild.bind(this);
 
-      // Safe rebuild handler (prevents rebuild during seeking/scrubbing)
+      // prevent rebuilds during seeking/scrubbing
       this.safeRebuild = () => {
         if (!this.isBuilt) return;
-        // אל תבצע rebuild בזמן seek/גרירה
         if (this.player.seeking && this.player.seeking()) return;
         if (this.player.hasClass && this.player.hasClass('vjs-scrubbing')) return;
         this.rebuild();
       };
 
-      // Wait for player ready then build
+      // ready -> build
       if (player.isReady_) {
         this.waitAndBuild();
       } else {
         player.ready(() => this.waitAndBuild());
       }
 
-      // Listen for layout-affecting events only (avoid canplay)
+      // only layout-affecting events
       player.on('loadstart', this.safeRebuild);
       player.on('loadedmetadata', this.safeRebuild);
       player.on('playerresize', this.safeRebuild);
       player.on('fullscreenchange', this.safeRebuild);
 
-      // Cleanup on dispose
       player.one('dispose', () => this.dispose());
     }
 
@@ -144,18 +132,16 @@
       const cbEl = controlBar.el();
       if (!cbEl) return;
 
-      // Don't rebuild if already built
       if (player.hasClass('vjs-has-2row-controls')) return;
 
       try {
-        // Wait for progress control to exist
         const progressEl = await waitForElement('.vjs-progress-control', cbEl, 2000);
         if (!progressEl) {
           console.warn('VideoJS Rows: Could not find progress control');
           return;
         }
 
-        // Create row containers
+        // build layout skeleton
         const topRow = document.createElement('div');
         topRow.className = 'vjs-2row-top';
 
@@ -168,32 +154,25 @@
         const rightContainer = document.createElement('div');
         rightContainer.className = 'vjs-2row-bottom-right';
 
-        // Clear control bar
+        // clear original bar DOM
         cbEl.innerHTML = '';
 
-        // Add rows
+        // mount rows
         cbEl.appendChild(topRow);
         cbEl.appendChild(bottomRow);
-
-        // Add left/right to bottom row
         bottomRow.appendChild(leftContainer);
         bottomRow.appendChild(rightContainer);
 
-        // Move progress to top row
+        // progress on top
         topRow.appendChild(progressEl);
 
-        // Add left controls
+        // add only explicitly requested controls
         this.leftControls.forEach(controlName => {
           this.addControlToContainer(controlBar, controlName, leftContainer, cbEl);
         });
-
-        // Add right controls
         this.rightControls.forEach(controlName => {
           this.addControlToContainer(controlBar, controlName, rightContainer, cbEl);
         });
-
-        // Also collect any remaining controls not explicitly handled
-        this.addAllRemainingControls(controlBar, leftContainer, rightContainer, cbEl);
 
         player.addClass('vjs-has-2row-controls');
         this.isBuilt = true;
@@ -201,63 +180,6 @@
       } catch (error) {
         console.error('VideoJS Rows build error:', error);
       }
-    }
-
-    addAllRemainingControls(controlBar, leftContainer, rightContainer, cbEl) {
-      // Get all control bar children
-      const allChildren = controlBar.children();
-
-      // Also look for any remaining DOM elements in the control bar
-      const domElements = Array.from(cbEl.children).filter(el =>
-        !el.classList.contains('vjs-2row-top') &&
-        !el.classList.contains('vjs-2row-bottom') &&
-        !el.classList.contains('vjs-progress-control')
-      );
-
-      // Process VideoJS component children
-      allChildren.forEach(child => {
-        if (child && child.el && typeof child.el === 'function') {
-          const childEl = child.el();
-          if (
-            childEl &&
-            !childEl.classList.contains('vjs-progress-control') &&
-            !leftContainer.contains(childEl) &&
-            !rightContainer.contains(childEl)
-          ) {
-            const isLeftControl = this.leftControls.some(leftCtrl => {
-              const componentName = CONTROL_MAP[leftCtrl];
-              if (componentName && child.name_ === componentName) return true;
-
-              const possibleClasses = [
-                `vjs-${leftCtrl}`,
-                `vjs-${leftCtrl.replace(/([A-Z])/g, '-$1').toLowerCase()}`
-              ];
-              return possibleClasses.some(cls => childEl.classList.contains(cls));
-            });
-
-            if (!isLeftControl) {
-              rightContainer.appendChild(childEl);
-            }
-          }
-        }
-      });
-
-      // Process remaining DOM elements
-      domElements.forEach(el => {
-        if (!leftContainer.contains(el) && !rightContainer.contains(el)) {
-          const isLeftControl = this.leftControls.some(leftCtrl => {
-            const possibleClasses = [
-              `vjs-${leftCtrl}`,
-              `vjs-${leftCtrl.replace(/([A-Z])/g, '-$1').toLowerCase()}`
-            ];
-            return possibleClasses.some(cls => el.classList.contains(cls));
-          });
-
-          if (!isLeftControl) {
-            rightContainer.appendChild(el);
-          }
-        }
-      });
     }
 
     addControlToContainer(controlBar, controlName, container, cbEl) {
@@ -292,7 +214,8 @@
       }
 
       if (!foundControl) {
-        console.warn(`VideoJS Rows: Could not find control "${controlName}"`);
+        // silent: not requested -> do nothing
+        // console.warn(`VideoJS Rows: Could not find control "${controlName}"`);
       }
     }
 
@@ -303,17 +226,28 @@
       const cbEl = controlBar && controlBar.el();
       if (!cbEl) return;
 
-      // אם המבנה כבר קיים – הוסף רק בקרים חסרים, בלי teardown
       const topRow = cbEl.querySelector('.vjs-2row-top');
       const left = cbEl.querySelector('.vjs-2row-bottom-left');
       const right = cbEl.querySelector('.vjs-2row-bottom-right');
 
       if (topRow && left && right) {
-        this.addAllRemainingControls(controlBar, left, right, cbEl);
+        // ננקה תוכן ונרכיב מחדש רק את מה שצריך
+        left.innerHTML = '';
+        right.innerHTML = '';
+
+        // השאר את progress בשורה העליונה כמו שהוא
+
+        // הוסף רק בקרים שהוגדרו במפורש
+        this.leftControls.forEach(controlName => {
+          this.addControlToContainer(controlBar, controlName, left, cbEl);
+        });
+        this.rightControls.forEach(controlName => {
+          this.addControlToContainer(controlBar, controlName, right, cbEl);
+        });
         return;
       }
 
-      // אם חסר מבנה – ביצוע rebuild מלא
+      // מבנה חסר -> rebuild מלא
       this.isBuilt = false;
       this.player.removeClass('vjs-has-2row-controls');
       setTimeout(() => this.build(), 100);
@@ -322,25 +256,16 @@
     dispose() {
       const player = this.player;
       const root = player.el();
-
       if (!root || !this.isBuilt) {
-        try {
-          super.dispose();
-        } catch (e) {}
+        try { super.dispose(); } catch (e) {}
         return;
       }
 
       const controlBar = player.getChild('ControlBar');
-      if (!controlBar) {
-        try { super.dispose(); } catch (e) {}
-        return;
-      }
+      if (!controlBar) { try { super.dispose(); } catch (e) {} ; return; }
 
       const cbEl = controlBar.el();
-      if (!cbEl) {
-        try { super.dispose(); } catch (e) {}
-        return;
-      }
+      if (!cbEl) { try { super.dispose(); } catch (e) {} ; return; }
 
       try {
         const allControls = [];
@@ -350,9 +275,7 @@
 
         [topRow, leftContainer, rightContainer].forEach(container => {
           if (container) {
-            Array.from(container.children).forEach(child => {
-              allControls.push(child);
-            });
+            Array.from(container.children).forEach(child => { allControls.push(child); });
           }
         });
 
@@ -360,14 +283,10 @@
         if (topRow) topRow.remove();
         if (bottomRow) bottomRow.remove();
 
-        allControls.forEach(control => {
-          if (control) {
-            cbEl.appendChild(control);
-          }
-        });
+        // מחזיר את כל האלמנטים ל-control bar (למצב ברירת המחדל)
+        allControls.forEach(control => { if (control) cbEl.appendChild(control); });
 
         player.removeClass('vjs-has-2row-controls');
-
       } catch (error) {
         console.error('VideoJS Rows dispose error:', error);
       }
