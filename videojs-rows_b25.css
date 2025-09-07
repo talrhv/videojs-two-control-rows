@@ -325,3 +325,37 @@
 .video-js.vjs-has-2row-controls.vjs-user-inactive .note-tooltip-readonly {
   pointer-events: none !important;
 }
+
+/* --- Force FADE auto-hide everywhere (normal + fullscreen + Safari tech-FS) --- */
+
+/* מצב רגיל – כשלא פעיל: הסתר ב-fade בלבד */
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused) .vjs-control-bar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* כשה-:fullscreen יושב על ה-PLAYER (חלק מדפדפנים/מצבים) */
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):fullscreen .vjs-control-bar,
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):-webkit-full-screen .vjs-control-bar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* כשה-:fullscreen יושב על אלמנט הווידאו (Safari לעיתים עושה את זה) */
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):has(.vjs-tech:fullscreen) .vjs-control-bar,
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):has(.vjs-tech:-webkit-full-screen) .vjs-control-bar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* אופציונלי: הסתרת סמן במסך מלא כשלא פעיל (נעים לעין) */
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):fullscreen,
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):-webkit-full-screen,
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):has(.vjs-tech:fullscreen),
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):has(.vjs-tech:-webkit-full-screen) {
+  cursor: none !important;
+}
+
