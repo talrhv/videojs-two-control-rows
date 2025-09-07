@@ -28,7 +28,33 @@
   backdrop-filter: blur(2px);
   border-radius: 0 0 8px 8px;
   z-index: 10;
-  transform: none !important;
+  /* IMPORTANT: allow Video.js to slide the bar on inactivity */
+  /* (was 'transform: none !important;' which broke auto-hide) */
+  will-change: opacity, transform;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Respect Video.js auto-hide when user is inactive and video has started & not paused */
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused) .vjs-control-bar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(110%) !important; /* slide below bottom */
+}
+
+/* Keep controls visible when active/hover, but don't override user-inactive */
+.video-js.vjs-has-2row-controls:not(.vjs-user-inactive):hover .vjs-control-bar,
+.video-js.vjs-has-2row-controls.vjs-user-active .vjs-control-bar,
+.video-js.vjs-has-2row-controls.vjs-paused .vjs-control-bar {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Also hide the bar entirely when controls are disabled or native controls used */
+.video-js.vjs-has-2row-controls.vjs-controls-disabled .vjs-control-bar,
+.video-js.vjs-has-2row-controls.vjs-using-native-controls .vjs-control-bar {
+  display: none !important;
 }
 
 /* Top row - progress bar only */
@@ -55,7 +81,7 @@
 .video-js.vjs-has-2row-controls .vjs-progress-control .vjs-progress-holder {
   height: 20px !important;
   margin: 2px 0 !important;
-/*   border-radius: 8px; */
+  /* border-radius: 8px; */
   background: rgba(255, 255, 255, 0.2) !important;
   overflow: hidden !important;
   position: unset;
@@ -67,14 +93,14 @@
 .video-js.vjs-has-2row-controls .vjs-load-progress div {
   background: rgba(255, 255, 255, 0.3) !important;
   height: 100%;
-/*   border-radius: 8px; */
+  /* border-radius: 8px; */
 }
 
 /* Play progress */
 .video-js.vjs-has-2row-controls .vjs-play-progress {
   background: var(--primary-color, #00d4ff) !important;
   height: 100%;
-/*   border-radius: 8px; */
+  /* border-radius: 8px; */
   position: relative;
   overflow: hidden !important;
 }
@@ -274,23 +300,13 @@
   margin: 0;
 }
 
-/* Animation for smooth transitions */
-.video-js.vjs-has-2row-controls .vjs-control-bar {
-  transition: opacity 0.3s ease;
-}
+/* (transition moved above to include transform) */
 
-/* Ensure control bar stays visible on hover */
+/* Ensure control bar stays visible on hover, without overriding user-inactive */
 .video-js.vjs-has-2row-controls:not(.vjs-user-inactive):hover .vjs-control-bar {
   opacity: 1;
+  transform: translateY(0);
 }
-
-.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused) .vjs-control-bar {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
 
 .vjs-icon-placeholder::before {
   display: flex;
