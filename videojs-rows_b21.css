@@ -280,9 +280,17 @@
 }
 
 /* Ensure control bar stays visible on hover */
-.video-js.vjs-has-2row-controls:hover .vjs-control-bar {
+.video-js.vjs-has-2row-controls:not(.vjs-user-inactive):hover .vjs-control-bar {
   opacity: 1;
 }
+
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused) .vjs-control-bar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
 
 .vjs-icon-placeholder::before {
   display: flex;
