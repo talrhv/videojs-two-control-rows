@@ -304,3 +304,24 @@
   align-items: center;
   justify-content: center;
 }
+/* --- Force fade auto-hide on fullscreen in Safari/Chrome --- */
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused) .vjs-control-bar,
+.video-js.vjs-has-2row-controls.vjs-fullscreen.vjs-has-started.vjs-user-inactive:not(.vjs-paused) .vjs-control-bar,
+.video-js.vjs-has-2row-controls:fullscreen.vjs-has-started.vjs-user-inactive:not(.vjs-paused) .vjs-control-bar,
+.video-js.vjs-has-2row-controls:-webkit-full-screen.vjs-has-started.vjs-user-inactive:not(.vjs-paused) .vjs-control-bar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* הסתר גם את הסמן במסך מלא כשלא פעיל (אופציונלי אבל נעים) */
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):fullscreen,
+.video-js.vjs-has-2row-controls.vjs-has-started.vjs-user-inactive:not(.vjs-paused):-webkit-full-screen {
+  cursor: none !important;
+}
+
+/* אם טול־טיפים/אוברים תופסים אירועים, נבטל אותם כשלא פעיל */
+.video-js.vjs-has-2row-controls.vjs-user-inactive .vjs-tooltip,
+.video-js.vjs-has-2row-controls.vjs-user-inactive .note-tooltip-readonly {
+  pointer-events: none !important;
+}
